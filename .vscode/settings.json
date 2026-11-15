@@ -1,3 +1,17 @@
 {
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.jj": true,
+        "**/__pycache__": true,
+        "**/.ipynb_checkpoints": true,
+        "target": true,
+        ".vscode": true,
+        ".zed": true,
+        "*.lock": true,
+        "*.gitignore": true,
+        "*.spelling": true
+    },
     "harper.workspaceDictPath": ".spelling"
 }

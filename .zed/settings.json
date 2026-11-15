@@ -8,4 +8,5 @@
             },
         },
     },
+    "file_scan_exclusions": ["target", "*.lock"],
 }

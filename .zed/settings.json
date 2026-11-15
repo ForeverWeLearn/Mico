@@ -1,0 +1,11 @@
+{
+    "lsp": {
+        "harper-ls": {
+            "settings": {
+                "harper-ls": {
+                    "workspaceDictPath": ".spelling",
+                },
+            },
+        },
+    },
+}

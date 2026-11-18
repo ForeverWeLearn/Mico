@@ -2,42 +2,43 @@
 
 #show: template
 
-#let first-row-width = 12em;
+#let token-col-width = 12em;
+#let numeric-col-width = 6em;
 
 #large("Typography")
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
+  columns: (auto, auto),
+  align: (left, left),
   table.header([*Font*], [*str*]),
-  "Text", font-text,
-  "Icon", font-icon,
+  "font-text", font-text,
+  "font-icon", font-icon,
 )
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
+  columns: (token-col-width, numeric-col-width),
+  align: (left, right),
   table.header([*Weight*], [*int*]),
-  "Normal", str(weight-normal),
-  "Bold", str(weight-bold),
+  "weight-normal", str(weight-normal),
+  "weight-bold", str(weight-bold),
 )
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
+  columns: (token-col-width, numeric-col-width),
+  align: (left, right),
   table.header([*Text*], [*px*]),
-  "Small", "12 px",
-  "Medium", "16 px",
-  "Large", "24 px",
+  "text-sm", pt-to-px(text-sm),
+  "text-md", pt-to-px(text-md),
+  "text-lg", pt-to-px(text-lg),
 )
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
+  columns: (token-col-width, numeric-col-width),
+  align: (left, right),
   table.header([*Leading*], [*em*]),
-  "Small", "1.333 em",
-  "Medium", "1.0 em",
-  "Large", "0.5 em",
+  "leading-sm", repr(leading-sm),
+  "leading-md", repr(leading-md),
+  "leading-lg", repr(leading-lg),
 )
 
 #v(unit-y)
@@ -47,19 +48,18 @@
 #large("Palette")
 
 #table(
-  columns: (2 * unit-x, first-row-width, 1fr, 2fr),
-  align: (left, left + horizon, center + horizon, center + horizon),
-  table.header([*Color*], [], [*hex*], [*oklch*]),
-  color-node(c: color-bg), "Background", color-bg.to-hex(), "oklch(16%, 0, 0deg)",
-  color-node(c: color-fg), "Foreground", color-fg.to-hex(), "oklch(95%, 0, 0deg)",
+  columns: (2 * unit-x, token-col-width - 2 * unit-x, token-col-width, 1fr, 2fr),
+  align: (left, left + horizon, left + horizon, center + horizon, center + horizon),
+  table.header([*Color*], [], [*Inherit*], [*hex*], [*oklch*]),
+  color-node(color-bg), "color-bg", "", color-bg.to-hex(), oklch-to-str(color-bg),
+  color-node(color-fg), "color-fg", "", color-fg.to-hex(), oklch-to-str(color-fg),
 )
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
+  columns: (token-col-width, numeric-col-width),
+  align: (left, right),
   table.header([*Opacity*], [*float*]),
-  "Hover", "0.2",
-  "Muted", "0.1",
+  "opacity-hover", repr(opacity-hover),
 )
 
 #v(unit-y)
@@ -69,26 +69,28 @@
 #large("Length")
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
+  columns: (token-col-width, numeric-col-width),
+  align: (left, right),
   table.header([*Unit*], [*px*]),
-  "X", "16 px",
-  "Y", "48 px",
+  "unit-x", pt-to-px(unit-x),
+  "unit-y", pt-to-px(unit-y),
 )
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
-  table.header([*Border*], [*px*]),
-  "Width", "2 px",
+  columns: (token-col-width, numeric-col-width),
+  align: (left, right),
+  table.header([*Border Width*], [*px*]),
+  "border-width-sm", pt-to-px(border-width-sm),
+  "border-width-md", pt-to-px(border-width-md),
 )
 
 #table(
-  columns: (first-row-width, 1fr),
-  align: (left, center),
-  table.header([*Radius*], [*px*]),
-  "Medium", "8 px",
-  "Large", "16 px",
+  columns: (token-col-width, token-col-width, numeric-col-width),
+  align: (left, left, right),
+  table.header([*Radius*], [*Inherit*], [*px*]),
+  "radius-md", "", pt-to-px(radius-md),
+  "radius-lg", "", pt-to-px(radius-lg),
+  "radius-button", inherit("radius-md"), pt-to-px(radius-md),
 )
 
 #v(unit-y)
@@ -103,7 +105,7 @@
       width: 360pt * PX,
       title-text: "Text",
       components: (
-        [#align(center, large("Title!"))],
+        [#align(center, large("Monospace"))],
         [#align(center, bold("Modern ♥ Minimalistic"))],
         [#lorem(8)],
         [#small(lorem(21))],

@@ -1,4 +1,4 @@
-#let PX = 72 / 96
+#let PX = 0.75
 
 #let opacity-active = 100%
 #let opacity-hover = 15%
@@ -107,7 +107,7 @@
   ),
 )
 
-#let icon(name: str, fill: stroke) = scale(x: 125%, y: 125%)[#text(name, font: font-icon, fill: fill)]
+#let icon(name: str, fill: stroke) = scale(x: 133%, y: 133%)[#text(name, font: font-icon, fill: fill)]
 
 #let button(icon-name: "", name: "Button", active: false, width: auto) = {
   let bg = if active { color-fg } else { color-bg }
@@ -131,10 +131,19 @@
   )
 }
 
-#let color-node(c: color-bg) = block(
+#let color-node(c) = block(
   width: unit-x,
   height: unit-x,
   fill: c,
   radius: unit-x,
   stroke: border-width-md + color-fg,
 )
+
+#let oklch-to-str(c) = {
+  let (l, chroma, h, alpha) = oklch(c).components()
+  "oklch(" + repr(l) + ", " + str(calc.round(chroma, digits: 3)) + ", " + repr(h) + ")"
+}
+
+#let inherit(sth) = sym.arrow.r.curve + " " + sth
+
+#let pt-to-px(p) = repr(calc.trunc(p / PX / 1pt)) + "px"

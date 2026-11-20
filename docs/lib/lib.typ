@@ -1,24 +1,10 @@
+// Constants
 #let PX = 0.75
-
-#let opacity-active = 100%
-#let opacity-hover = 15%
-
 #let transparent = oklch(0%, 0, 0deg, 0%)
-#let color-bg = oklch(16%, 0, 0deg)
-#let color-fg = oklch(95%, 0, 0deg)
-#let color-hover = color-fg.transparentize(100% - opacity-hover)
-#let color-border = color-hover
+#let pangram = "The quick brown fox jumps over the lazy dog"
 
-#let border-width-sm = 1pt * PX
-#let border-width-md = 2pt * PX
 
-#let radius-md = 8pt * PX
-#let radius-lg = 16pt * PX
-#let radius-button = radius-md;
-
-#let unit-x = 16pt * PX
-#let unit-y = 48pt * PX
-
+// Typography
 #let font-text = "JetBrains Mono"
 #let font-icon = "Material Symbols Outlined"
 
@@ -33,117 +19,26 @@
 #let leading-md = 1.0em
 #let leading-lg = 0.5em
 
-#let template(doc) = {
-  set page(
-    width: unit-x * 88,
-    height: auto,
-    margin: (x: unit-x * 8, y: unit-y * 2),
-    fill: color-bg,
-  )
-  set text(
-    font: font-text,
-    size: text-md,
-    weight: weight-normal,
-    fill: color-fg,
-  )
-  set par(leading: leading-md, spacing: leading-md * 3)
-  show table: it => block(
-    breakable: false,
-    radius: radius-md,
-    stroke: border-width-sm + color-border,
-    clip: true,
-    it,
-  )
-  show table.cell.where(y: 0): set text(fill: color-bg, weight: weight-bold)
-  set table(
-    stroke: (x, y) => if y == 0 { 1pt + color-fg } else if y == 1 { (top: 1pt + color-fg) } else {
-      transparent
-    },
-    fill: (x, y) => if y == 0 { color-fg } else { color-bg },
-    inset: unit-x,
-  )
-  doc
-}
 
-#let small(doc) = {
-  set text(size: text-sm)
-  set par(leading: leading-sm, spacing: leading-sm * 2)
-  doc
-}
+// Palette
+#let color-bg = oklch(16%, 0, 0deg)
+#let color-fg = oklch(95%, 0, 0deg)
+#let color-muted = oklch(62%, 0, 0deg)
+#let color-stroke = oklch(32%, 0, 0deg)
 
-#let large(doc) = {
-  set text(size: text-lg, weight: weight-bold)
-  set par(leading: leading-lg, spacing: leading-lg * 2)
-  set underline(offset: 8pt * PX, stroke: 4pt * PX + color-fg)
-  doc
-}
 
-#let bold(doc) = {
-  set text(weight: weight-bold)
-  doc
-}
+// Measurement
+#let unit-x = 16pt * PX
+#let unit-y = 48pt * PX
 
-#let container(
-  width: auto,
-  dash: "dashed",
-  doc,
-) = block(
-  width: width,
-  inset: unit-x,
-  radius: radius-md,
-  stroke: (thickness: border-width-md, paint: if dash == none { transparent } else { color-border }, dash: dash),
-  spacing: unit-x,
-  doc,
-)
+#let corner-radius = 6pt * PX
 
-#let component-card(width: auto, title-text: str, components: array) = container(
-  width: width,
-  dash: none,
-  stack(
-    dir: ttb,
-    spacing: unit-x,
-    align(center, block(inset: unit-y, large(title-text))),
-    components.map(element => container(width: 100%, element)).join(),
-  ),
-)
+#let stroke-width = 1.5pt * PX
 
-#let icon(name: str, fill: stroke) = scale(x: 133%, y: 133%)[#text(name, font: font-icon, fill: fill)]
+#let icon-scale = 125%;
 
-#let button(icon-name: "", name: "Button", active: false, width: auto) = {
-  let bg = if active { color-fg } else { color-bg }
-  let fg = if active { color-bg } else { color-fg }
-  let has-icon = icon-name != ""
-  let has-name = name != ""
 
-  block(
-    width: width,
-    height: unit-y,
-    radius: radius-button,
-    fill: bg,
-    stroke: border-width-md + color-border,
-    inset: unit-x,
-    align(center, stack(
-      dir: ltr,
-      spacing: if has-icon and has-name { unit-x } else { 0pt },
-      if has-icon { align(horizon + center, icon(name: icon-name, fill: fg)) },
-      if has-name { align(horizon, text(name, fill: fg)) },
-    )),
-  )
-}
-
-#let color-node(c) = block(
-  width: unit-x,
-  height: unit-x,
-  fill: c,
-  radius: unit-x,
-  stroke: border-width-md + color-fg,
-)
-
-#let to-oklch(c) = {
-  let (l, chroma, h, alpha) = oklch(c).components()
-  "oklch(" + repr(l) + ", " + str(calc.round(chroma, digits: 3)) + ", " + repr(h) + ")"
-}
-
+// Utils
 #let to-rgb(c) = {
   let (r, g, b, a) = rgb(c).components()
   (
@@ -157,6 +52,142 @@
   )
 }
 
+#let to-oklch(c) = {
+  let (l, chroma, h, alpha) = oklch(c).components()
+  "oklch(" + repr(l) + ", " + str(calc.round(chroma, digits: 3)) + ", " + repr(h) + ")"
+}
+
+#let pt-to-px(p, truncate: true) = {
+  let truncate = calc.trunc(p / PX / 1pt)
+  let estimate = calc.round(p / PX / 1pt, digits: 1)
+  repr(if calc.abs(truncate - estimate) < 0.01 { truncate } else { estimate }) + "px"
+}
+
+
+// Document Template
+#let template(doc) = {
+  set page(
+    width: unit-x * 88,
+    height: auto,
+    margin: (x: unit-x * 8, y: unit-y * 2),
+    fill: color-bg,
+  )
+  set text(
+    font: font-text,
+    size: text-md,
+    weight: weight-normal,
+    fill: color-fg,
+  )
+  show strong: set text(weight: weight-bold)
+  set strike(stroke: stroke-width, extent: unit-x / 4)
+  set par(leading: leading-md, spacing: leading-md * 3)
+  show table: it => block(
+    breakable: false,
+    radius: corner-radius,
+    stroke: stroke-width + color-stroke,
+    clip: true,
+    it,
+  )
+  show table.cell.where(y: 0): set text(fill: color-bg, weight: weight-bold)
+  set table(
+    stroke: (x, y) => if y == 0 { 1pt + color-fg } else if y == 1 { (top: 1pt + color-fg) } else {
+      transparent
+    },
+    fill: (x, y) => if y == 0 { color-fg } else { color-bg },
+    align: (x, y) => left + horizon,
+    inset: unit-x,
+  )
+  doc
+}
+
+
+// Primitive Components
+#let small(doc) = {
+  set text(size: text-sm)
+  set par(leading: leading-sm, spacing: leading-sm * 3)
+  doc
+}
+
+#let large(doc) = {
+  set text(size: text-lg)
+  set par(leading: leading-lg, spacing: leading-lg * 2)
+  set underline(offset: 8pt * PX, stroke: 4pt * PX + color-fg)
+  doc
+}
+
+#let muted(doc) = {
+  set text(fill: color-muted)
+  doc
+}
+
+#let icon(name, fill: color-fg) = box(
+  width: unit-x,
+  height: unit-x,
+  scale(x: icon-scale, y: icon-scale)[#text(name, font: font-icon, fill: fill)],
+)
+
+#let color-node(c) = box(
+  width: unit-x,
+  height: unit-x,
+  fill: c,
+  radius: unit-x,
+  stroke: stroke-width + color-fg,
+)
+
 #let inherit(sth) = sym.arrow.r.curve + " " + sth
 
-#let pt-to-px(p) = repr(calc.trunc(p / PX / 1pt)) + "px"
+#let container(
+  width: auto,
+  dash: "solid",
+  doc,
+) = block(
+  width: width,
+  inset: unit-x,
+  radius: corner-radius,
+  stroke: (thickness: stroke-width, paint: if dash == none { transparent } else { color-stroke }, dash: dash),
+  spacing: unit-x,
+  doc,
+)
+
+
+// Components
+#let button(icon-name: "", name: "Button", muted: false, hover: false, active: false, width: auto) = {
+  let bg = if active { color-fg } else { color-bg }
+  let fg = if active { color-bg } else if muted { color-muted } else { color-fg }
+  let has-icon = icon-name != ""
+  let has-name = name != ""
+
+  block(
+    width: width,
+    height: unit-y,
+    radius: corner-radius,
+    fill: bg,
+    stroke: if active { stroke-width + color-fg } else if hover { stroke-width + color-stroke } else { none },
+    inset: unit-x,
+    align(center, stack(
+      dir: ltr,
+      spacing: if has-icon and has-name { unit-x } else { 0pt },
+      if has-icon { align(horizon + center, icon(icon-name, fill: fg)) },
+      if has-name { align(horizon, text(name, fill: fg)) },
+    )),
+  )
+}
+
+#let component-card(width: auto, title-text: str, components: array) = container(
+  width: width,
+  dash: none,
+  stack(
+    dir: ttb,
+    spacing: unit-x,
+    align(center, block(inset: unit-y, large(title-text))),
+    components.map(element => container(width: 100%, element)).join(),
+  ),
+)
+
+#let color-row(color-name, c) = table.header(
+  color-node(c),
+  color-name,
+  c.to-hex(),
+  to-rgb(c),
+  to-oklch(c),
+)

@@ -2,8 +2,10 @@ use std::sync::Arc;
 
 use eframe::{
     App,
-    egui::{self, Color32, FontData, FontFamily, Style, Visuals},
+    egui::{self, FontData, FontFamily, Style, Visuals},
 };
+
+use crate::tokens::Palette;
 
 #[derive(Default)]
 pub struct MicoApp {}
@@ -28,15 +30,13 @@ impl MicoApp {
             .unwrap()
             .insert(0, "JetBrains Mono".to_owned());
 
-        let color_fg = Color32::from_rgb(238, 238, 238);
-        let color_bg = Color32::from_rgb(13, 13, 13);
         let visuals = Visuals {
-            override_text_color: Some(color_fg),
-            window_fill: color_bg,
-            panel_fill: color_bg,
+            override_text_color: Some(Palette::FG),
+            window_fill: Palette::BG,
+            panel_fill: Palette::BG,
             window_stroke: egui::Stroke {
                 width: 4.0,
-                color: color_fg,
+                color: Palette::FG,
             },
             window_corner_radius: 64.into(),
             ..Default::default()

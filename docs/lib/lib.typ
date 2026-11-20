@@ -35,9 +35,9 @@
 
 #let template(doc) = {
   set page(
-    width: 29.7cm,
+    width: unit-x * 88,
     height: auto,
-    margin: (x: unit-x * 12, y: unit-y * 4),
+    margin: (x: unit-x * 8, y: unit-y * 2),
     fill: color-bg,
   )
   set text(
@@ -139,9 +139,22 @@
   stroke: border-width-md + color-fg,
 )
 
-#let oklch-to-str(c) = {
+#let to-oklch(c) = {
   let (l, chroma, h, alpha) = oklch(c).components()
   "oklch(" + repr(l) + ", " + str(calc.round(chroma, digits: 3)) + ", " + repr(h) + ")"
+}
+
+#let to-rgb(c) = {
+  let (r, g, b, a) = rgb(c).components()
+  (
+    "rgb("
+      + repr(int(calc.round(r / 1% * 2.55)))
+      + ", "
+      + repr(int(calc.round(g / 1% * 2.55)))
+      + ", "
+      + repr(int(calc.round(b / 1% * 2.55)))
+      + ")"
+  )
 }
 
 #let inherit(sth) = sym.arrow.r.curve + " " + sth

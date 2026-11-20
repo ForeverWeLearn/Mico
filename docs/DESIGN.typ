@@ -48,11 +48,11 @@
 #large("Palette")
 
 #table(
-  columns: (2 * unit-x, token-col-width - 2 * unit-x, token-col-width, 1fr, 2fr),
-  align: (left, left + horizon, left + horizon, center + horizon, center + horizon),
-  table.header([*Color*], [], [*Inherit*], [*hex*], [*oklch*]),
-  color-node(color-bg), "color-bg", "", color-bg.to-hex(), oklch-to-str(color-bg),
-  color-node(color-fg), "color-fg", "", color-fg.to-hex(), oklch-to-str(color-fg),
+  columns: (2 * unit-x, token-col-width - 2 * unit-x, token-col-width, 1fr, 2fr, 2.4fr),
+  align: (left + horizon, left + horizon, left + horizon, center + horizon, center + horizon, center + horizon),
+  table.header([*Color*], [], [*Inherit*], [*hex*], [*rgb*], [*oklch*]),
+  color-node(color-bg), "color-bg", "", color-bg.to-hex(), to-rgb(color-bg), to-oklch(color-bg),
+  color-node(color-fg), "color-fg", "", color-fg.to-hex(), to-rgb(color-fg), to-oklch(color-fg),
 )
 
 #table(

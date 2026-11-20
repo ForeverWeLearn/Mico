@@ -1,5 +1,5 @@
 [package]
-name = "Mico"
+name = "mico"
 description = "My Modern Minimalistic Image Collection"
 version = "0.1.0"
 edition = "2024"
